@@ -1,0 +1,59 @@
+このHTMLドキュメントは、Google AI for Developersにおける google.generativeai.ChatSession クラスの Python 用リファレンスドキュメントです。
+
+google.generativeai.ChatSession クラス
+このクラスは、Googleの生成AIモデルとのチャットセッションを管理します。
+
+主な機能
+チャット履歴の保持: 送受信したメッセージは ChatSession.history 属性に保存され、チャットのコンテキストが維持されます。
+メッセージ送信: send_message メソッドを使用してモデルにメッセージを送信し、応答を受け取ることができます。
+ストリーミング応答: send_message メソッドで stream=True を指定することで、応答をチャンク単位で受信できます。
+設定のオーバーライド: generation_config や safety_settings を使用して、モデルの生成設定や安全設定をオーバーライドできます。
+非同期メッセージ送信: send_message_async メソッドを使用すると、非同期的にメッセージを送信できます。
+使用例
+Python
+import google.generativeai as genai
+
+# モデルのインスタンスを作成
+model = genai.GenerativeModel(model="gemini-pro")
+
+# チャットセッションを開始
+chat = model.start_chat()
+
+# メッセージを送信し、応答を受け取る
+response = chat.send_message("Hello")
+print(response.text)  # "Hello! How can I assist you today?"
+
+# チャット履歴の長さを確認
+print(len(chat.history))  # 2
+
+# ストリーミング応答を受信
+response = chat.send_message("Explain quantum physics", stream=True)
+for chunk in response:
+  print(chunk.text, end='')
+詳細
+詳細については、各メソッドや属性の説明を参照してください。
+このページは、Google AI for Developersにおける google.generativeai.GenerationConfig クラスの Python 用リファレンスドキュメントです。
+
+google.generativeai.GenerationConfig クラス
+このデータクラスは、GenerativeModel.generate_content を使ってテキストを生成する際の様々なパラメータを設定するために使用します。
+
+主な属性
+candidate_count: 生成する応答の候補数。
+stop_sequences: 生成されるテキストを途中で停止させる文字列のシーケンス (最大5つ)。指定した場合、APIはstop_sequencesのいずれかが最初に現れた時点でテキスト生成を停止します。
+max_output_tokens: 生成されるテキストの最大トークン数。未設定の場合は、モデルの仕様で指定された output_token_limit がデフォルト値となります。
+temperature: 生成されるテキストのランダム性を制御します。値の範囲は0.0から1.0で、1.0に近いほど多様で創造的な応答が生成され、0.0に近いほどより直接的で予測可能な応答が生成されます。デフォルト値はモデルによって異なり、genai.get_model 関数が返す Model.temperature 属性で確認できます。
+top_p: サンプリング時に考慮するトークンの累積確率の最大値。Top-kサンプリングとnucleusサンプリングを組み合わせて使用します。
+top_k: サンプリング時に考慮するトークンの最大数。デフォルト値は40です。Top-kサンプリングでは、確率の高い上位k個のトークンのみが考慮されます。
+response_mime_type: 生成されたテキストのMIMEタイプ。text/plain (デフォルト) と application/json がサポートされています。
+response_schema: response_mime_type が application/json の場合に、JSONのフォーマットを指定します。
+使用例
+Python
+from google.generativeai import GenerationConfig
+
+# 応答候補数を2つに設定
+generation_config = GenerationConfig(candidate_count=2)
+
+#  "stop" という単語で応答を停止
+generation_config = GenerationConfig(stop_sequences=["stop"]) 
+詳細
+各属性のより詳細な説明や使用例については、上記のリファレンスドキュメントを参照してください。
